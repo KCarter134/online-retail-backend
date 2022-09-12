@@ -3,7 +3,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
 
-// gets all products
+// GET route
 router.get('/', (req, res) => {
   // find all products
   // includes associated category and tag
@@ -27,10 +27,9 @@ router.get('/', (req, res) => {
 });
 
 
-// gets  product
+// GET route
 router.get('/:id', (req, res) => {
-  // finds a single product by its ID
-  // includes associated Category and Tag data
+  // finds a product by its ID
   Product.findOne({
     where: {
       id: req.params.id
@@ -62,6 +61,7 @@ router.get('/:id', (req, res) => {
 
 
 // creates new product
+// POST route
 router.post('/', (req, res) => {
   Product.create({
     product_name: req.body.product_name,
@@ -71,7 +71,6 @@ router.post('/', (req, res) => {
     tagIds: req.body.tag_id
   })
       .then((product) => {
-        // if there's product tags, we need to create pairings to bulk create in the ProductTag model
         if (req.body.tagIds.length) {
           const productTagIdArr = req.body.tagIds.map((tag_id) => {
             return {
@@ -81,7 +80,7 @@ router.post('/', (req, res) => {
           });
           return ProductTag.bulkCreate(productTagIdArr);
         }
-        // if no product tags, just respond
+        // if no product tags, throw error
         res.status(200).json(product);
       })
       .then((productTagIds) => res.status(200).json(productTagIds))
@@ -91,9 +90,9 @@ router.post('/', (req, res) => {
       });
 });
 
-// updates product
+// PUT route
 router.put('/:id', (req, res) => {
-  // updates product data
+  // updates products data
   Product.update(req.body, {
     where: {
       id: req.params.id,
@@ -104,9 +103,8 @@ router.put('/:id', (req, res) => {
         return ProductTag.findAll({ where: { product_id: req.params.id } });
       })
       .then((productTags) => {
-        // gets list of current tag_ids
+        // gets list of current tag IDs
         const productTagIds = productTags.map(({ tag_id }) => tag_id);
-        // creates filtered list of new tag_ids
         const newProductTags = req.body.tagIds
             .filter((tag_id) => !productTagIds.includes(tag_id))
             .map((tag_id) => {

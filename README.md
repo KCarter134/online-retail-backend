@@ -21,7 +21,7 @@ Run develop/server.js in the command line
 ## Contribution:
 Feel free to fork the repo and work on it as you please. If you have any changes you'd like me to make, refer to the contact section of this readme for my email.
 ## Testing:
-Please refer to screenshots. Insomnia was used to test APIs
+Please refer to screenshots. Insomnia was used to test APIs/routes
 ## Contact: 
 Email: Kcarter134@yahoo.com
 ## Screenshot

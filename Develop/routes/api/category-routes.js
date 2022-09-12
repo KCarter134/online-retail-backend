@@ -3,6 +3,7 @@ const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
+//GET route
 router.get('/', (req, res) => {
   Category.findAll({
       attributes: ["id", "category_name"],
@@ -13,21 +14,21 @@ router.get('/', (req, res) => {
           },
       ],
   })
-      .then(dbCatagoryData => res.json(dbCatagoryData))
+      .then(dbCategoryData => res.json(dbCategoryData))
       .catch(err => {
           console.log(err);
           res.status(500).json(err);
       });
 });
 
+//GET route
 router.get("/:id", (req, res) => {
 
-    // finds one category by its `id` value and its associated products
+    // located categories by their ID and its attributes
     Category.findOne({
         where: {
             id: req.params.id,
         },
-        attributes: ["id", "category_name"],
         include: [
             {
                 model: Product,
@@ -49,6 +50,7 @@ router.get("/:id", (req, res) => {
 });
 
 //creates new category
+//POST route
 router.post('/', (req, res) => {
     Category.create({
         category_name: req.body.category_name
@@ -61,6 +63,7 @@ router.post('/', (req, res) => {
 });
 
 // implements an update to a category based on ID
+//PUT route
 router.put('/:id', (req, res) => {
     Category.update(req.body, {
         where: {
@@ -81,6 +84,7 @@ router.put('/:id', (req, res) => {
 });
 
 // deletes a category by its ID value
+//DELETE route
 router.delete("/:id", (req, res) => {
     Category.destroy({
         where: { id: req.params.id },

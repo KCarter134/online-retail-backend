@@ -16,7 +16,7 @@ Product.init(
       primaryKey: true,
       autoIncrement: true
     },
-    // define product name column
+    // defines product name column
     product_name: {
       type: DataTypes.STRING,
       allowNull: false
